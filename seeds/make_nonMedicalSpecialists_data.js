@@ -7,6 +7,9 @@ exports.seed = async function (knex) {
     await knex('nonSpecialists').del()
     await knex('nonSpecialists').insert([
         {name: 'Secretary'},
+        {name: 'laboratory'},
+        {name: 'radiographer'},
+        {name: 'Secretary'},
         {name: 'Receptionist'},
         {name: 'Boss'},
         {name: 'accountant'},

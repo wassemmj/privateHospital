@@ -2,20 +2,17 @@ const express = require('express') ;
 const app = express() ;
 const path = require('path');
 
-// const user = require('./routes/users') ;
-// const category = require('./routes/categories') ;
-// const product = require('./routes/products') ;
-// const favorite = require('./routes/favorites') ;
-// const order = require('./routes/orders') ;
-// const comment = require('./routes/comments') ;
+const doctor = require('./routes/user_routes/doctors') ;
+const nurse = require('./routes/user_routes/nurses') ;
+const nonMedical = require('./routes/user_routes/nonMedicals') ;
+const specialist = require('./routes/hospital_routes/specialists_routes') ;
+const nonSpecialist = require('./routes/hospital_routes/nonMedical_specialist_routes') ;
 
 app.use(express.json()) ;
-app.use(express.static(path.join(__dirname, 'public')));
-// app.use('/api/user', user) ;
-// app.use('/api/category', category) ;
-// app.use('/api/product', product) ;
-// app.use('/api/favorite', favorite) ;
-// app.use('/api/order', order) ;
-// app.use('/api/comment', comment) ;
+app.use('/api/doctors' , doctor) ;
+app.use('/api/nurses' , nurse) ;
+app.use('/api/nonMedicals' , nonMedical) ;
+app.use('/api/specialists' , specialist) ;
+app.use('/api/nonSpecialists' , nonSpecialist) ;
 
 app.listen(3000 , () => console.log('connected')) ;
