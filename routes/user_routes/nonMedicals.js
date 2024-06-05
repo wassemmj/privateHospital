@@ -8,4 +8,7 @@ router.get('/' , nonMedicalController.getAllNonMedical) ;
 router.get('/details/:id' , nonMedicalController.getNonMedicalDetails) ; // id of nonMedical
 router.get('/:id' , nonMedicalController.getNonMedicalSpecialist) ; // id of nonMedical Specialist
 
+router.delete('/:id' , nonMedicalController.deleteAccount) ; // id of nonMedical
+router.put('/:id' , nonMedicalController.editAccount) ; // id of nonMedical
+
 module.exports = router ;

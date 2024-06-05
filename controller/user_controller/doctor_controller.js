@@ -3,6 +3,7 @@ const { User } = require('../../models/user_models/User');
 const Joi = require('joi').extend(require('@joi/date'));
 const knex = require('../../db');
 const bcrypt = require("bcrypt");
+const _ = require('lodash') ;
 const generatePassword = require('./generate');
 
 module.exports.getAllDoctor = async (req , res) => {
@@ -113,6 +114,7 @@ module.exports.createDoctor = async (req , res) => {
     const password = generatePassword(8) ;
     const salt = await bcrypt.genSalt(10);
     newDoctor.password = await bcrypt.hash(password , salt);
+
     const user = new User(newDoctor) ;
 
     try {
@@ -128,6 +130,69 @@ module.exports.createDoctor = async (req , res) => {
         if ('ER_NO_REFERENCED_ROW_2' === e.code) {
             return res.status(400).send({'message' : 'the specialist id is wrong'}) ;
         }
-        return res.status(400).send({'message' : e}) ;
+        return res.status(400).send({'message' : e.message}) ;
+    }
+}
+
+module.exports.deleteDoctor = async (req , res) => {
+    const id = req.params.id ;
+    if(isNaN(id) || id <=0) {
+        throw new Error('bad request!') ;
+    }
+    try {
+        const result = await knex('doctors').where('id' , '=' , id).first() ;
+        if (result === undefined) return res.status(400).send({'message' : 'The doctor not found '}) ;
+        const userID = result.userID ;
+        console.log(userID) ;
+        await knex.transaction(async (trx) => {
+            await trx('doctors').where('id' , '=' , id).delete() ;
+            await trx('users').where('id' , '=' , userID).delete() ;
+        }) ;
+        res.status(200).send({'message' : 'done successfully'}) ;
+    } catch (e) {
+        res.status(400).send({'message' : e.message}) ;
+    }
+}
+
+module.exports.editDoctor = async (req , res) => {
+    const schema = Joi.object({
+        fullName : Joi.string().min(3) ,
+        phoneNumber : Joi.string().min(10),
+        fatherName : Joi.string().min(3),
+        motherName : Joi.string().min(3),
+        internationalNumber : Joi.string(),
+        currentLocation : Joi.string(),
+        gender : Joi.boolean(),
+        birthdate: Joi.date().format('YYYY-MM-DD').utc() ,
+        specialistsID : Joi.number().sign('positive')
+    });
+    const doctorID = req.params.id ;
+
+    const editDoctor = req.body ;
+
+    const { error } = schema.validate(editDoctor) ;
+    if (error) return res.status(404).send({'message' : error.details[0].message}) ;
+
+    if(isNaN(doctorID) || doctorID <=0) {
+        throw new Error('bad request!') ;
+    }
+
+    try {
+        const result = await knex('doctors').where('id' , '=' , doctorID).first() ;
+        if (result === undefined){
+            return res.status(400).send({'message' : 'The Doctor not found '}) ;
+        }
+        await knex.transaction(async (trx) => {
+            if (editDoctor.hasOwnProperty('specialistsID')) {
+                await trx('doctors').where('id' , '=' , doctorID).update('specialistsID',editDoctor.specialistsID) ;
+                await trx('users').where('id' , '=' , result.userID).update(_.omit(editDoctor , 'specialistsID')) ;
+            } else {
+                // await trx('doctors').where('id' , '=' , doctorID).update(editDoctor.specialistsID) ;
+                await trx('users').where('id' , '=' , result.userID).update(editDoctor) ;
+            }
+        }) ;
+        res.status(200).send({'message' : 'edited successfully'}) ;
+    } catch (e) {
+        res.status(404).send({'message' : e.message}) ;
     }
 }
