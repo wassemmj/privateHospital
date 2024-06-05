@@ -3,6 +3,7 @@ const knex = require('../../db') ;
 class Room {
     constructor(data) {
         this.roomNumber = data.roomNumber;
+        this.status = data.status;
         this.floorID = data.floorID;
     }
 

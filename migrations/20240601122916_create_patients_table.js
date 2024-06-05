@@ -15,8 +15,7 @@ exports.up = async function(knex) {
         table.boolean('gender').notNullable();
         table.string('work').notNullable();
         table.string('socialStatus').notNullable();
-        table.integer('roomID').unsigned().notNullable();
-        table.foreign('roomID').references('rooms.id');
+        table.timestamp('deleted_at').nullable().defaultTo(null);
         table.timestamps(true, true);
     });
 };

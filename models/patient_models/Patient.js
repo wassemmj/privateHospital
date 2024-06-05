@@ -12,7 +12,6 @@ class Patient {
         this.gender = data.gender ;
         this.work = data.work ;
         this.socialStatus = data.socialStatus ;
-        this.roomID = data.roomID ;
     }
 
     async save() {

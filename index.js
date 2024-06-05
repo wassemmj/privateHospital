@@ -8,6 +8,7 @@ const nurse = require('./routes/user_routes/nurses') ;
 const nonMedical = require('./routes/user_routes/nonMedicals') ;
 const specialist = require('./routes/hospital_routes/specialists') ;
 const nonSpecialist = require('./routes/hospital_routes/nonMedicalSpecialists') ;
+const patient = require('./routes/patient_routes/patient_auth_routes');
 
 app.use(express.json()) ;
 app.use('/api' , user) ;
@@ -16,5 +17,6 @@ app.use('/api/nurses' , nurse) ;
 app.use('/api/nonMedicals' , nonMedical) ;
 app.use('/api/specialists' , specialist) ;
 app.use('/api/nonSpecialists' , nonSpecialist) ;
+app.use('/api/patient' , patient) ;
 
 app.listen(3000 , () => console.log('connected')) ;
