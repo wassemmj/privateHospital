@@ -7,8 +7,8 @@ exports.up = async function(knex) {
         table.increments('id').primary();
         table.integer('nurseID').unsigned().notNullable();
         table.string('day').notNullable();
-        table.time('start').notNullable();
-        table.time('end').notNullable();
+        table.string('start').notNullable();
+        table.string('end').notNullable();
         table.foreign('nurseID').references('nurses.id');
         table.timestamps(true, true);
     }) ;
