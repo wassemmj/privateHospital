@@ -11,6 +11,9 @@ class VitalSign{
     async save(){
         return await knex('vitalSigns').insert(this);
     }
+    async update(patientID){
+        await knex('vitalSigns').where('patientID' , patientID).update(this);
+    }
 }
 
 module.exports.VitalSign = VitalSign;

@@ -13,6 +13,9 @@ class NeckExamination{
     async save(){
         return await knex('necksExaminations').insert(this);
     }
+    async update(patientID){
+        await knex('necksExaminations').where('patientID' , patientID).update(this);
+    }
 }
 
 module.exports.NeckExamination = NeckExamination;

@@ -4,7 +4,6 @@ class Skin{
     constructor(data) {
         this.color=data.color;
         this.natural=data.natural;
-        this.color=data.color;
         this.other=data.other;
         this.hair=data.hair;
         this.headsExaminationsID=data.headsExaminationsID;

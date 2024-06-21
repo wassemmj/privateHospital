@@ -7,7 +7,7 @@ exports.up = async function(knex) {
       table.increments('id').primary();
       table.boolean('goodCondition');
       table.boolean('cachecticPatient');
-      table.enum('conscience',['Alert_and_Responsive','Mental_Confusion','Unconscious']).defaultTo('Alert_and_Responsive');
+      table.enum('conscience',['Alert_and_Responsive','Mental_Confusion','Unconscious']);
       table.integer('gcs');
       table.integer('patientID').unsigned().notNullable();
       table.foreign('patientID').references('patients.id');
