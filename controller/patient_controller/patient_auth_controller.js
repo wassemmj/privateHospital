@@ -244,4 +244,22 @@ module.exports.restorePatient = async (req, res) => {
     }
 };
 
+module.exports.createClinicalForm = async (req,res)=>{
+    try{
+        const formID = await  knex('clinicalForms').insert({'patientID': req.params.id})
+        res.status(200).send({'formID':formID});
+    }catch (e){
+        res.status(404).send({'message':e.message});
+    }
+};
+
+module.exports.getAllClinicalForm = async (req,res)=>{
+    try{
+        const ClinicalForm = await  knex('clinicalForms').where({'patientID': req.params.id});
+        res.status(200).send({'ClinicalForm':ClinicalForm});
+    }catch (e){
+        res.status(404).send({'message':e.message});
+    }
+};
+
 

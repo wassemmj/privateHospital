@@ -8,8 +8,8 @@ exports.up = async function(knex) {
       table.string('smoking');
       table.string('alcahol');
       table.string('other');
-      table.integer('patientID').unsigned().notNullable();
-      table.foreign('patientID').references('patients.id');
+      table.integer('clinicalFormID').unsigned().notNullable();
+      table.foreign('clinicalFormID').references('clinicalForms.id');
       table.timestamps(true,true);
   });
 };

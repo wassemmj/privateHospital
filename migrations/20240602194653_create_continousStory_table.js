@@ -13,8 +13,8 @@ exports.up = async function(knex) {
       table.boolean('bloodTransfusion');
       table.string('details');
       table.text('summary');
-      table.integer('patientID').unsigned().notNullable();
-      table.foreign('patientID').references('patients.id');
+      table.integer('clinicalFormID').unsigned().notNullable();
+      table.foreign('clinicalFormID').references('clinicalForms.id');
       table.timestamps(true, true);
   }) ;
 };

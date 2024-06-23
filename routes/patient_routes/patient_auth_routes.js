@@ -12,5 +12,7 @@ router.post('/restorePatient/:id', patientController.restorePatient);
 router.post('/chooseRoom/:roomid/:patientid', patientController.chooseRoom);
 router.post('/editPatientInformation/:id', patientController.editPatientInformation);
 router.post('/editCompanionInformation/:id', patientController.editCompanionInformation);
+router.post('/createClinicalForm/:id', patientController.createClinicalForm);
+router.get('/getAllClinicalForm/:id', patientController.getAllClinicalForm);
 
 module.exports = router;

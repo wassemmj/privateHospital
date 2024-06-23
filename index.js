@@ -12,6 +12,7 @@ const patient = require('./routes/patient_routes/patient_auth_routes');
 const working = require('./routes/medical_routes/WorkingTime');
 const nurseWorking = require('./routes/medical_routes/NurseWorkingTimes');
 const clinical = require('./routes/clinical_examination/clinical_examination_routes');
+const generalInformation = require('./routes/general_information_routes/general_information');
 
 app.use(express.json()) ;
 app.use('/api' , user) ;
@@ -24,5 +25,6 @@ app.use('/api/patient' , patient) ;
 app.use('/api/working' , working) ;
 app.use('/api/nurseWorking' , nurseWorking) ;
 app.use('/api/clinical' , clinical) ;
+app.use('/api/generalInformation' , generalInformation) ;
 
 app.listen(3000 , () => console.log('connected')) ;

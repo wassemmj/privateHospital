@@ -12,8 +12,8 @@ exports.up = async function(knex) {
       table.string('remedies');
       table.string('complentsFrequency');
       table.string('complentsImprovment');
-      table.integer('patientID').unsigned().notNullable();
-      table.foreign('patientID').references('patients.id');
+      table.integer('clinicalFormID').unsigned().notNullable();
+      table.foreign('clinicalFormID').references('clinicalForms.id');
       table.timestamps(true,true);
   });
 };

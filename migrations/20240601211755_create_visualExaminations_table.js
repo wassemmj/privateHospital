@@ -9,8 +9,8 @@ exports.up = async function(knex) {
       table.boolean('cachecticPatient');
       table.enum('conscience',['Alert_and_Responsive','Mental_Confusion','Unconscious']);
       table.integer('gcs');
-      table.integer('patientID').unsigned().notNullable();
-      table.foreign('patientID').references('patients.id');
+      table.integer('clinicalFormID').unsigned().notNullable();
+      table.foreign('clinicalFormID').references('clinicalForms.id');
       table.timestamps(true,true);
   });
 };

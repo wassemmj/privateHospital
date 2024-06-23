@@ -5,8 +5,8 @@
 exports.up = async function(knex) {
   await knex.schema.createTable('pastMedicalHistorys',(table)=>{
     table.increments('id').primary();
-    table.integer('patientID').unsigned().notNullable();
-    table.foreign('patientID').references('patients.id');
+    table.integer('clinicalFormID').unsigned().notNullable();
+    table.foreign('clinicalFormID').references('clinicalForms.id');
     table.timestamps(true,true);
   });
 };

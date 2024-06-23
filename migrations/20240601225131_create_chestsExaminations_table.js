@@ -7,8 +7,8 @@ exports.up = async function(knex) {
       table.increments('id').primary();
       table.enum('Compressions',['Silent','hyperresonance']);
       table.enum('respiratorySounds',['Clear_and_Symmetrical','wheezing','Fine_Crackles',' CoarseCrackles']);
-      table.integer('patientID').unsigned().notNullable();
-      table.foreign('patientID').references('patients.id');
+      table.integer('clinicalFormID').unsigned().notNullable();
+      table.foreign('clinicalFormID').references('clinicalForms.id');
       table.timestamps(true,true);
   })
 };
