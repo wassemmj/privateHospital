@@ -6,7 +6,7 @@ class VisualExamination{
         this.cachecticPatient=data.cachecticPatient;
         this.conscience=data.conscience;
         this.gcs=data.gcs;
-        this.patientID=data.patientID;
+        this.clinicalFormID=data.clinicalFormID;
     }
     async save(){
         return await knex('visualExaminations').insert(this);

@@ -2,7 +2,7 @@ const knex = require('../../db');
 
 class PastMedicalHistory{
     constructor(data) {
-        this.patientID=data.patientID;
+        this.clinicalFormID=data.clinicalFormID;
     }
     async save(){
         return await knex('pastMedicalHistorys').insert('this');

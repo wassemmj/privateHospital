@@ -6,7 +6,7 @@ class VitalSign{
         this.Rr= data.Rr;
         this.bodyTempreture= data.bodyTempreture;
         this.heartRate= data.heartRate;
-        this.patientID= data.patientID;
+        this.clinicalFormID= data.clinicalFormID;
     }
     async save(){
         return await knex('vitalSigns').insert(this);

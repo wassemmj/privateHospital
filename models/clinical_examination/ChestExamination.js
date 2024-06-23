@@ -4,7 +4,7 @@ class ChestExamination{
     constructor(data) {
         this.Compressions=data.Compressions;
         this.respiratorySounds=data.respiratorySounds;
-        this.patientID=data.patientID;
+        this.clinicalFormID=data.clinicalFormID;
     }
     async save(){
         return await knex('chestsExaminations').insert(this);

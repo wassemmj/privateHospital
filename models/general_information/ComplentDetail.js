@@ -9,7 +9,7 @@ class ComplentDetail{
         this.remedies = data.remedies;
         this.complentsFrequency = data.complentsFrequency;
         this.complentsImprovment = data.complentsImprovment;
-        this.patientID = data.patientID;
+        this.clinicalFormID = data.clinicalFormID;
     }
     async save(){
         return await knex('complentsDetails').insert(this);

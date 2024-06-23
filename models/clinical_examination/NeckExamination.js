@@ -8,7 +8,7 @@ class NeckExamination{
         this.neckStiffenss = data.neckStiffenss;
         this.pembertonsSign = data.pembertonsSign;
         this.thyroid_gland_testing = data.thyroid_gland_testing;
-        this.patientID = data.patientID;
+        this.clinicalFormID = data.clinicalFormID;
     }
     async save(){
         return await knex('necksExaminations').insert(this);

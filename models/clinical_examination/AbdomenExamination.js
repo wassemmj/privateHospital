@@ -2,7 +2,7 @@ const knex = require('../../db');
 
 class AbdomenExamination{
     constructor(data) {
-        this.patientID = data.patientID;
+        this.clinicalFormID = data.clinicalFormID;
     }
     async save(){
         return await knex('abdomenExamination').insert(this);

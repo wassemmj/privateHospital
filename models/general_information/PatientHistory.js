@@ -5,7 +5,7 @@ class PatientHistory{
         this.smoking = data.smoking;
         this.alcahol = data.alcahol;
         this.other = data.other;
-        this.patientID = data.patientID;
+        this.clinicalFormID = data.clinicalFormID;
     }
     async save(){
         return await knex('patientsHistorys').insert(this);

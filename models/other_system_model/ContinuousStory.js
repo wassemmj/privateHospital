@@ -10,7 +10,7 @@ class ContinuousStory {
         this.bloodTransfusion = data.bloodTransfusion;
         this.details = data.details;
         this.summary = data.summary;
-        this.patientID = data.patientID;
+        this.clinicalFormID = data.clinicalFormID;
     }
 
     async save() {
