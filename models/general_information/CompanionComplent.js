@@ -9,7 +9,7 @@ class CompanionComplent{
         this.complentdetailID=data.complentdetailID;
     }
     async save(){
-        return await knex('companionsComplents').insert('this');
+        return await knex('companionsComplents').insert(this);
     }
 }
 

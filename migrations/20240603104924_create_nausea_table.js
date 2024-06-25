@@ -9,6 +9,7 @@ exports.up = async function(knex) {
     table.string('frequency');
     table.string('comfortable');
     table.string('qualities');
+    table.string('lmsqa');
     table.integer('abdomenAreaID').unsigned().notNullable();
     table.foreign('abdomenAreaID').references('abdomenAreas.id');
     table.timestamps(true, true);
