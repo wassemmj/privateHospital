@@ -13,8 +13,8 @@ class NeckExamination{
     async save(){
         return await knex('necksExaminations').insert(this);
     }
-    async update(patientID){
-        await knex('necksExaminations').where('patientID' , patientID).update(this);
+    async update(id){
+        await knex('necksExaminations').where('id' , id).update(this);
     }
 }
 

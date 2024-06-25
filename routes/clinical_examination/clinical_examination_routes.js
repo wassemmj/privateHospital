@@ -4,6 +4,7 @@ const router = express.Router() ;
 const clinicalExamination = require('../../controller/clinical_examination/clinical_examination_controller');
 
 router.post('/vital/:id' , clinicalExamination.addVitalSigns) ;
+router.put('/vital/:id' , clinicalExamination.editVitalSigns) ;
 router.post('/visual/:id' , clinicalExamination.addVisualExamination) ;
 router.post('/head/:id' , clinicalExamination.addHeadExamination) ;
 router.post('/neck/:id' , clinicalExamination.addNeckExamination) ;
