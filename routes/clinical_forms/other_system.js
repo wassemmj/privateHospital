@@ -1,7 +1,7 @@
 const express = require('express') ;
 const router = express.Router() ;
 
-const other_system_controller = require('../controller/other_system_controller');
+const other_system_controller = require('../../controller/clinicl_form_controller/other_system_controller');
 
 router.post('/:id' , other_system_controller.otherSystem) ;
 router.post('/continuousstory/:id' , other_system_controller.continuousstory) ;

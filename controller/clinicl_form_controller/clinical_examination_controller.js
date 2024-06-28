@@ -209,24 +209,33 @@ module.exports.editHeadExamination = async (req, res) => {
                 headsExaminationsID = heads[0].id;
             }
             if (oldHead.hasOwnProperty('skin')) {
+                const skins = await knex('skins').where('headsExaminationsID', headsExaminationsID);
                 const skin = oldHead.skin;
                 skin.headsExaminationsID = headsExaminationsID;
-                if (heads.length > 0) {
+                if (skins.length > 0) {
                     await trx('skins').where('headsExaminationsID', headsExaminationsID).update(skin);
+                } else {
+                    await trx('skins').insert(skin);
                 }
             }
             if (oldHead.hasOwnProperty('eyes')) {
+                const eyes1 = await knex('eyes').where('headsExaminationsID', headsExaminationsID);
                 const eyes = oldHead.eyes;
                 eyes.headsExaminationsID = headsExaminationsID;
-                if (heads.length > 0) {
+                if (eyes1.length > 0) {
                     await trx('eyes').where('headsExaminationsID', headsExaminationsID).update(eyes);
+                } else {
+                    await trx('eyes').insert(eyes);
                 }
             }
             if (oldHead.hasOwnProperty('mouth')) {
+                const mouths = await knex('mouths').where('headsExaminationsID', headsExaminationsID);
                 const mouth = oldHead.mouth;
                 mouth.headsExaminationsID = headsExaminationsID;
-                if (heads.length > 0) {
+                if (mouths.length > 0) {
                     await trx('mouths').where('headsExaminationsID', headsExaminationsID).update(mouth);
+                } else {
+                    await trx('mouths').insert(mouth);
                 }
             }
         });
@@ -356,15 +365,20 @@ module.exports.editChestExamination = async (req, res) => {
 
 
     try {
-        const chestQuery = await knex('chestsExaminations').where('id', id).first();
+        const chestQuery = await knex('chestsExaminations').where('id', id);
         chestExamination.clinicalFormID = chestQuery.clinicalFormID;
         let chest = null;
         if (chestQuery.length > 0) {
             chest = chestQuery[0].id;
             if (oldChests.hasOwnProperty('visualExamination')) {
+                const tt = await knex('visualsChest').where('chestID', chest) ;
                 const visual = oldChests.visualExamination;
                 visual.chestID = chest;
-                await knex('visualsChest').where('chestID', chest).update(visual);
+                if (tt.length > 0) {
+                    await knex('visualsChest').where('chestID', chest).update(visual);
+                } else {
+                    await knex('visualsChest').insert(visual);
+                }
             }
         }
         res.status(200).send({'message': "success"});
@@ -477,19 +491,34 @@ module.exports.editAbdomenExamination = async (req, res) => {
             }
             let abdomenExaminationID = id;
             if (newAbdomen.hasOwnProperty('Percussion')) {
+                const aa = await trx('percussions').where('abdomenID', abdomenExaminationID) ;
                 const Percussion = newAbdomen.Percussion;
                 Percussion.abdomenID = abdomenExaminationID;
-                await trx('percussions').where('abdomenID', abdomenExaminationID).update(Percussion);
+                if (aa.length > 0) {
+                    await trx('percussions').where('abdomenID', abdomenExaminationID).update(Percussion);
+                } else {
+                    await trx('percussions').insert(Percussion);
+                }
             }
             if (newAbdomen.hasOwnProperty('Palpation')) {
+                const aa = await trx('palpations').where('abdomenID', abdomenExaminationID) ;
                 const Palpation = newAbdomen.Palpation;
                 Palpation.abdomenID = abdomenExaminationID;
-                await trx('palpations').where('abdomenID', abdomenExaminationID).update(Palpation);
+                if (aa.length > 0) {
+                    await trx('palpations').where('abdomenID', abdomenExaminationID).update(Palpation);
+                } else {
+                    await trx('palpations').insert(Palpation);
+                }
             }
             if (newAbdomen.hasOwnProperty('VisualAbdomen')) {
+                const aa = await trx('visualsAbdomen').where('abdomenID', abdomenExaminationID) ;
                 const VisualAbdomen = newAbdomen.VisualAbdomen;
                 VisualAbdomen.abdomenID = abdomenExaminationID;
-                await trx('visualsAbdomen').where('abdomenID', abdomenExaminationID).update(VisualAbdomen);
+                if (aa.length > 0) {
+                    await trx('visualsAbdomen').where('abdomenID', abdomenExaminationID).update(VisualAbdomen);
+                } else {
+                    await trx('visualsAbdomen').insert(VisualAbdomen);
+                }
             }
         });
         res.status(200).send({'message': "success"});
@@ -592,20 +621,34 @@ module.exports.editLimbsExamination = async (req, res) => {
             }
             let limbExaminationID = limbs[0].id;
             if (oldLimb.hasOwnProperty('LowerLimb')) {
+                const aa = await trx('lowerLimps').where('limbsID', limbExaminationID) ;
                 const LowerLimb = oldLimb.LowerLimb;
                 LowerLimb.limbsID = limbExaminationID;
-                await trx('lowerLimps').where('limbsID', limbExaminationID).update(LowerLimb);
+                if (aa.length > 0) {
+                    await trx('lowerLimps').where('limbsID', limbExaminationID).update(LowerLimb);
+                } else {
+                    await trx('lowerLimps').insert(LowerLimb);
+                }
             }
             if (oldLimb.hasOwnProperty('Manu')) {
+                const aa = await trx('manus').where('limbsID', limbExaminationID) ;
                 const Manu = oldLimb.Manu;
                 Manu.limbsID = limbExaminationID;
-                await trx('manus').where('limbsID', limbExaminationID).update(Manu);
+                if (aa.length > 0) {
+                    await trx('manus').where('limbsID', limbExaminationID).update(Manu);
+                } else {
+                    await trx('manus').insert(Manu);
+                }
             }
             if (oldLimb.hasOwnProperty('ArticulationUnguisv')) {
+                const aa = await trx('manus').where('limbsID', limbExaminationID) ;
                 const ArticulationUnguisv = oldLimb.ArticulationUnguisv;
                 ArticulationUnguisv.limbsID = limbExaminationID;
-                await trx('articulationsUnguis').where('limbsID', limbExaminationID).update(ArticulationUnguisv);
-
+                if (aa.length > 0) {
+                    await trx('articulationsUnguis').where('limbsID', limbExaminationID).update(ArticulationUnguisv);
+                } else {
+                    await trx('articulationsUnguis').insert(ArticulationUnguisv);
+                }
             }
         });
         res.status(200).send({'message': "success"});

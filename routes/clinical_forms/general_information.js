@@ -1,7 +1,7 @@
 const express = require('express') ;
 const router = express.Router() ;
 
-const general_information_controller = require('../../controller/general_information_controller/general_information_controller');
+const general_information_controller = require('../../controller/clinicl_form_controller/general_information_controller');
 
 router.post('/patientHistory/:id' , general_information_controller.patientHistory) ;
 router.post('/complent/:id' , general_information_controller.complentsDetails) ;

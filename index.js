@@ -11,9 +11,9 @@ const nonSpecialist = require('./routes/hospital_routes/nonMedicalSpecialists') 
 const patient = require('./routes/patient_routes/patient_auth_routes');
 const working = require('./routes/medical_routes/WorkingTime');
 const nurseWorking = require('./routes/medical_routes/NurseWorkingTimes');
-const clinical = require('./routes/clinical_examination/clinical_examination_routes');
-const generalInformation = require('./routes/general_information_routes/general_information');
-const othersystem = require('./routes/other_system');
+const clinical = require('./routes/clinical_forms/clinical_examination_routes');
+const generalInformation = require('./routes/clinical_forms/general_information');
+const othersystem = require('./routes/clinical_forms/other_system');
 
 
 

@@ -1,8 +1,8 @@
-const {ContinuousStory} = require('../models/other_system_model/ContinuousStory');
+const {ContinuousStory} = require('../../models/other_system_model/ContinuousStory');
 
-const knex = require('../db');
+const knex = require('../../db');
 const Joi = require('joi');
-const {PatientHistory} = require("../models/general_information/PatientHistory");
+const {PatientHistory} = require("../../models/general_information/PatientHistory");
 
 module.exports.otherSystem = async (req, res) => {
     const schema = Joi.object({
