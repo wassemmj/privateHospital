@@ -5,7 +5,7 @@ const _ = require('lodash') ;
 const cron = require('node-cron');
 
 module.exports.workingTime = async (req, res) => {
-    const timeRegex = /^([01]\d|2[0-3])$/;
+    const timeRegex = /^([01]\d|2[0-4])$/;
     const scheme = Joi.object({
         workingTime: Joi.array().items(Joi.object({
             day: Joi.string().valid('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday').required(),
