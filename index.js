@@ -1,5 +1,7 @@
 const express = require('express') ;
 const app = express() ;
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
 const path = require('path');
 
 const user = require('./routes/user_routes/users') ;
@@ -17,6 +19,7 @@ const othersystem = require('./routes/clinical_forms/other_system');
 const clinicalForm = require('./routes/clinical_forms/clinical_forms_routes');
 const consults = require('./routes/consults_routes/consults_routes');
 
+const consultsCon = require('./controller/consults_controller/consults_controller');
 
 app.use(express.json()) ;
 app.use('/api' , user) ;
@@ -34,4 +37,17 @@ app.use('/api/othersystem' , othersystem) ;
 app.use('/api/clinicalForm' , clinicalForm) ;
 app.use('/api/consults' , consults) ;
 
-app.listen(3000 , () => console.log('connected')) ;
+io.on('connection', (socket) => {
+    console.log('A user connected');
+    io.emit('message' , (message) => {
+        console.log('ksjjkjkjk')
+        consultsCon.mmm(socket)
+    }) ;
+
+    // socket.on('recieveMessage' , (message ,) => {
+    //     console.log(message) ;
+    // }) ;
+});
+http.listen(3000, () => {
+    console.log('Server listening on port 3000');
+});

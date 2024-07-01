@@ -2,7 +2,7 @@ const knex = require('../../db');
 const Joi = require('joi') ;
 const cron = require('node-cron');
 
-async function sendConsult(id) {
+async function sendConsult(socket , id) {
     const today = new Date();
     let day = today.getDay();
     let hours = today.getHours(); // hours
@@ -26,6 +26,10 @@ async function sendConsult(id) {
                     console.log('ooioi')
                     found = true ;
                     found2 = true ;
+                    socket.emit('consult',(data , socket)=>{
+                        console.log('giefdskjfsdak');
+                        console.log('vvvvvvvvvvvvvv');
+                    });
                     console.log("done " + doctorsWorking[0].doctorID) ;
                     break ;
                 }
@@ -90,6 +94,19 @@ async function sendConsult(id) {
             }
         }
     }
+}
+function dd(socket ) {
+    console.log('hghghgh') ;
+                    socket.on('consult',async (data )=>{
+                        await knex('consults').insert({
+                            'consults' : data.consults ,
+                            'doctorID' : 1
+                        }) ;
+                    });
+}
+
+module.exports.mmm =  (socket) => {
+     dd(socket) ;
 }
 
 module.exports.makeConsults = async (req , res) => {
