@@ -5,7 +5,9 @@ const consults = require('../../controller/consults_controller/consults_controll
 
 const doctorMidl = require('../../middleware/doctor_middleware');
 
-router.post('/:id' , doctorMidl, consults.makeConsults) ;
-router.post('/response/:id' , doctorMidl, consults.addResponse) ;
 
-module.exports = router ;
+module.exports = (io) => {
+    router.post('/:id' , doctorMidl, consults.makeConsults(io)) ;
+    router.post('/response/:id' , doctorMidl, consults.addResponse) ;
+    return router ;
+} ;

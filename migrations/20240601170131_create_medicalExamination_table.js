@@ -8,7 +8,7 @@ exports.up = async function(knex) {
         table.integer('doctorID').unsigned().notNullable();
         table.integer('patientID').unsigned().notNullable();
         table.string('askExaminations').notNullable();
-        table.text('response').notNullable();
+        table.text('response');
         table.foreign('doctorID').references('doctors.id');
         table.foreign('patientID').references('patients.id');
         table.timestamps(true, true);

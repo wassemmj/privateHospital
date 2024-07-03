@@ -1,8 +1,11 @@
 const express = require('express') ;
 const app = express() ;
-const http = require('http').Server(app);
-const io = require('socket.io')(http);
+const http = require('http');
+const socketIo = require('socket.io');
 const path = require('path');
+
+const server = http.createServer(app);
+const io = socketIo(server);
 
 const user = require('./routes/user_routes/users') ;
 const doctor = require('./routes/user_routes/doctors') ;
@@ -18,10 +21,10 @@ const generalInformation = require('./routes/clinical_forms/general_information'
 const othersystem = require('./routes/clinical_forms/other_system');
 const clinicalForm = require('./routes/clinical_forms/clinical_forms_routes');
 const consults = require('./routes/consults_routes/consults_routes');
-
-const consultsCon = require('./controller/consults_controller/consults_controller');
+const examinations = require('./routes/examintaion_routes/examinations_routes');
 
 app.use(express.json()) ;
+app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api' , user) ;
 app.use('/api/doctors' , doctor) ;
 app.use('/api/nurses' , nurse) ;
@@ -35,19 +38,21 @@ app.use('/api/clinical' , clinical) ;
 app.use('/api/generalInformation' , generalInformation) ;
 app.use('/api/othersystem' , othersystem) ;
 app.use('/api/clinicalForm' , clinicalForm) ;
-app.use('/api/consults' , consults) ;
+app.use('/api/consults' , consults(io)) ;
+app.use('/api/examinations' , examinations(io)) ;
 
 io.on('connection', (socket) => {
     console.log('A user connected');
-    io.emit('message' , (message) => {
-        console.log('ksjjkjkjk')
-        consultsCon.mmm(socket)
-    }) ;
 
-    // socket.on('recieveMessage' , (message ,) => {
-    //     console.log(message) ;
-    // }) ;
+    socket.on('join', (doctorId) => {
+        socket.join(doctorId);
+        console.log(`Doctor with ID ${doctorId} joined room ${doctorId}`);
+    });
+
+    socket.on('disconnect', () => {
+        console.log('user disconnected');
+    });
 });
-http.listen(3000, () => {
+server.listen(3000, () => {
     console.log('Server listening on port 3000');
 });
