@@ -17,14 +17,17 @@ const upload = multer({ storage });
 const examination = require('../../controller/examinations_controller/medical_examination_controller');
 
 const doctorMidl = require('../../middleware/doctor_middleware');
+const nonMedicalAuth = require('../../middleware/doctor_middleware');
 
 
 module.exports = (io) => {
     router.post('/:id' ,doctorMidl, examination.addMedicalExamination(io)) ;
-    router.post('/response/:id' , examination.addTheExaminations) ;
-    router.get('/' , examination.getMyExaminationsToResponse) ;
+    router.post('/response/:id' ,nonMedicalAuth, examination.addTheExaminations) ;
+    router.get('/' , nonMedicalAuth, examination.getMyExaminationsToResponse) ;
+    router.get('/patient/:id' , examination.getPatientExaminations) ;
     router.post('/radiograph/:id' ,doctorMidl, examination.addRadiograph(io)) ;
-    router.post('/radiograph/response/:id' , upload.single('photo') ,  examination.addRadiographResponse) ;
-    router.get('/radiograph/' , examination.getMyExaminationsToResponse) ;
+    // router.post('/radiograph/response/:id' , nonMedicalAuth, upload.single('photo') ,  examination.addRadiographResponse) ;
+    router.get('/radiograph/' , nonMedicalAuth, examination.getMyExaminationsToResponse) ;
+    router.get('/patient/radio/:id' , examination.getPatientRadiograph) ;
     return router ;
 } ;

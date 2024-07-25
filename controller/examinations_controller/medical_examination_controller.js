@@ -62,6 +62,15 @@ module.exports.getMyExaminationsToResponse = async (req, res) => {
     }
 }
 
+module.exports.getPatientExaminations = async (req, res) => {
+    try {
+        const Examination = await knex('medicalExaminations').where('patientID' , req.params.id);
+        res.status(200).send({'Examinations': Examination});
+    } catch (e) {
+        res.status(404).send({'message': e.message});
+    }
+}
+
 module.exports.addRadiograph = (io) => {
     return async (req,res)=>{
         const schema = Joi.object({
@@ -118,6 +127,15 @@ module.exports.addRadiographResponse = async (req, res) => {
 module.exports.getMyRadiographToResponse = async (req, res) => {
     try {
         const radiographs = await knex('radiographs').whereNull("photo");
+        res.status(200).send({'Radiographs': radiographs});
+    } catch (e) {
+        res.status(404).send({'message': e.message});
+    }
+}
+
+module.exports.getPatientRadiograph = async (req, res) => {
+    try {
+        const radiographs = await knex('radiographs').where("patientID" , req.params.id);
         res.status(200).send({'Radiographs': radiographs});
     } catch (e) {
         res.status(404).send({'message': e.message});

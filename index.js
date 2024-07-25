@@ -20,6 +20,8 @@ const clinical = require('./routes/clinical_forms/clinical_examination_routes');
 const generalInformation = require('./routes/clinical_forms/general_information');
 const othersystem = require('./routes/clinical_forms/other_system');
 const clinicalForm = require('./routes/clinical_forms/clinical_forms_routes');
+const information = require('./routes/information_routes/information_routes');
+const notification = require('./routes/notification_routes/notification_routes');
 const consults = require('./routes/consults_routes/consults_routes');
 const examinations = require('./routes/examintaion_routes/examinations_routes');
 
@@ -38,6 +40,8 @@ app.use('/api/clinical' , clinical) ;
 app.use('/api/generalInformation' , generalInformation) ;
 app.use('/api/othersystem' , othersystem) ;
 app.use('/api/clinicalForm' , clinicalForm) ;
+app.use('/api/information' , information) ;
+app.use('/api/notification' , notification) ;
 app.use('/api/consults' , consults(io)) ;
 app.use('/api/examinations' , examinations(io)) ;
 
