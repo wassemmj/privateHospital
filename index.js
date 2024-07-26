@@ -24,6 +24,7 @@ const information = require('./routes/information_routes/information_routes');
 const notification = require('./routes/notification_routes/notification_routes');
 const consults = require('./routes/consults_routes/consults_routes');
 const examinations = require('./routes/examintaion_routes/examinations_routes');
+const screeningTest = require('./routes/examintaion_routes/screening_test_routes');
 
 app.use(express.json()) ;
 app.use(express.static(path.join(__dirname, 'public')));
@@ -44,6 +45,7 @@ app.use('/api/information' , information) ;
 app.use('/api/notification' , notification) ;
 app.use('/api/consults' , consults(io)) ;
 app.use('/api/examinations' , examinations(io)) ;
+app.use('/api/screeningTest' , screeningTest) ;
 
 io.on('connection', (socket) => {
     console.log('A user connected');

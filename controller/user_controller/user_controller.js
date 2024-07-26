@@ -58,16 +58,14 @@ module.exports.login = async (req , res) => {
         }
         else {
             const query = await knex('nonMedicals as nm')
-                .select('nm.id' , 'nm.userID' , 'nm.nonSpecialistsID' , 'ns.name' ,
+                .select('nm.id' , 'u.password', 'nm.userID' , 'nm.nonSpecialistsID' , 'ns.name' ,
                     'fullName' , 'fatherName' , 'motherName' , 'phoneNumber' ,
                     'internationalNumber' , 'currentLocation' , 'birthdate' , 'gender')
                 .join('users as u' , 'u.id' , 'nm.userID')
                 .join('nonSpecialists as ns' , 'ns.id' , 'nm.nonSpecialistsID')
-                .where('n.nonSpecialistsID' , '=' , login.specialist);
-            console.log(query) ;
+                .where('nm.nonSpecialistsID' , '=' , login.specialist);
             for (let value of query) {
                 const password = await bcrypt.compare(login.password,value.password) ;
-                console.log(password) ;
                 if (password) {
                     user = value;
                     break ;

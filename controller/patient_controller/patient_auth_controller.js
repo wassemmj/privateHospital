@@ -62,8 +62,7 @@ module.exports.chooseRoom = async (req, res) => {
         await knex.transaction(async (trx) => {
             const patientcheck = await knex('patients').where('id' , patientID)
                 .whereNull('deleted_at');
-            console.log(patientcheck) ;
-            if (patientcheck.length < 0){
+            if (patientcheck.length === 0){
                 throw new Error('the patient is not in the system');
             }
             const roomStatus = await knex('rooms').where('id', roomID).first();

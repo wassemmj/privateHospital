@@ -103,18 +103,18 @@ module.exports.addRadiograph = (io) => {
 }
 
 module.exports.addRadiographResponse = async (req, res) => {
-    const scheme = Joi.object({
-        document: Joi.string(),
-        image : Joi.string().valid('image/jpg', 'image/png'),
-    });
     const radiographID = req.params.id;
 
-    const newResponse = req.body;
-    const {error} = scheme.validate(newResponse);
-    if (error) return res.status(400).send({'message': error.details[0].message});
+    const newResponse = req.body ;
 
-    const { filename } = req.file;
-    newResponse.image = filename.path;
+    const { image, pdf } = req.files;
+
+    if (!image || !pdf) {
+        return res.status(404).send({'message': "image and pdf are required"});
+    }
+
+    newResponse.image = image[0].filename;
+    newResponse.document = pdf[0].filename;
 
     try {
         await knex('radiographs').where('id', radiographID).update(newResponse) ;
