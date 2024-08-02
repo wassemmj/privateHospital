@@ -29,3 +29,12 @@ module.exports.createSpecialists = async (req , res) => {
         res.status(400).send({'message' : e}) ;
     }
 }
+
+module.exports.getAllRooms = async (req , res) => {
+    try {
+       const rooms = await knex('rooms') ;
+        res.status(200).send({'rooms' : rooms}) ;
+    } catch (e) {
+        res.status(400).send({'message' : e}) ;
+    }
+}
