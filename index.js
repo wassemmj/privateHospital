@@ -25,6 +25,8 @@ const notification = require('./routes/notification_routes/notification_routes')
 const consults = require('./routes/consults_routes/consults_routes');
 const examinations = require('./routes/examintaion_routes/examinations_routes');
 const screeningTest = require('./routes/examintaion_routes/screening_test_routes');
+const intensiveCare = require('./routes/intensiveCare_routes/intensive_care');
+const surgeryFile = require('./routes/intensiveCare_routes/surgery_file');
 
 app.use(express.json()) ;
 app.use(express.static(path.join(__dirname, 'public')));
@@ -46,6 +48,8 @@ app.use('/api/notification' , notification) ;
 app.use('/api/consults' , consults(io)) ;
 app.use('/api/examinations' , examinations(io)) ;
 app.use('/api/screeningTest' , screeningTest) ;
+app.use('/api/intensiveCare' , intensiveCare) ;
+app.use('/api/surgeryFile' , surgeryFile) ;
 
 io.on('connection', (socket) => {
     console.log('A user connected');

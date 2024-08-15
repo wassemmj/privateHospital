@@ -90,6 +90,29 @@ module.exports.chooseRoom = async (req, res) => {
     }
 };
 
+module.exports.checkout = async (req, res) => {
+    const patientID = req.params.id;
+    try {
+        await knex.transaction(async (trx) => {
+            const result = await trx('patients').where('id', patientID)
+                .whereNull('deleted_at')
+                .update('deleted_at', knex.fn.now());
+            if (result === 0) {
+                return res.status(404).send({message: 'Patient not found or already checked out'});
+            }
+            const pateintroom = await trx('patientRoom').where('patientID', patientID)
+                .first();
+            await trx('patientRoom').where('patientID', patientID)
+                .delete();
+            await trx('rooms').where('id', pateintroom.roomID).update({status: 'available'});
+            res.status(200).send({message: 'Patient checked out successfully'});
+        })
+    } catch (error) {
+        res.status(500).send({message: error.message});
+    }
+};
+
+
 module.exports.editPatientInformation = async (req, res) => {
     const schema = Joi.object({
         fullName: Joi.string().min(3),
@@ -129,7 +152,6 @@ module.exports.editPatientInformation = async (req, res) => {
         return res.status(400).send({'message' : e.message}) ;
     }
 };
-
 
 module.exports.editCompanionInformation = async (req, res) => {
     const schema = Joi.object({
@@ -182,28 +204,6 @@ module.exports.createCompanion = async (req, res) => {
             return res.status(400).send({'message': 'the patient id is wrong'});
         }
         return res.status(400).send({'message': e});
-    }
-};
-
-module.exports.checkout = async (req, res) => {
-    const patientID = req.params.id;
-    try {
-        await knex.transaction(async (trx) => {
-            const result = await trx('patients').where('id', patientID)
-                .whereNull('deleted_at')
-                .update('deleted_at', knex.fn.now());
-            if (result === 0) {
-                return res.status(404).send({message: 'Patient not found or already checked out'});
-            }
-            const pateintroom = await trx('patientRoom').where('patientID', patientID)
-                .first();
-            await trx('patientRoom').where('patientID', patientID)
-                .delete();
-            await trx('rooms').where('id', pateintroom.roomID).update({status: 'available'});
-            res.status(200).send({message: 'Patient checked out successfully'});
-        })
-    } catch (error) {
-        res.status(500).send({message: error.message});
     }
 };
 
