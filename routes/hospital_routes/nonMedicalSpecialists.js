@@ -5,6 +5,8 @@ const specialistController = require('../../controller/hospital_controller/nonMe
 
 router.get('/' , specialistController.getAllNonMedicalSpecialists) ;
 router.get('/rooms' , specialistController.getAllRooms) ;
+router.get('/rooms/:id' , specialistController.getFloorRoom) ;
+router.get('/floors' , specialistController.getAllFloors) ;
 router.post('/' , specialistController.createSpecialists) ;
 
 module.exports = router ;

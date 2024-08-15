@@ -27,7 +27,9 @@ const examinations = require('./routes/examintaion_routes/examinations_routes');
 const screeningTest = require('./routes/examintaion_routes/screening_test_routes');
 const intensiveCare = require('./routes/intensiveCare_routes/intensive_care');
 const surgeryFile = require('./routes/intensiveCare_routes/surgery_file');
+const cors = require("cors");
 
+app.use(cors()) ;
 app.use(express.json()) ;
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api' , user) ;

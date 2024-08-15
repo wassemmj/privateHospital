@@ -116,3 +116,17 @@ module.exports.editNurse = async (req, res) => {
         res.status(404).send({'message': e.message});
     }
 }
+
+module.exports.searchNurse = async (req , res) => {
+    try {
+        const nurses = await knex('nurses as n')
+            .select('n.id', 'n.userID', 'fullName', 'fatherName',
+                'motherName', 'phoneNumber', 'internationalNumber',
+                'currentLocation', 'birthdate', 'gender')
+            .join('users as u', 'u.id', 'n.userID')
+            .where('fullName', 'like', `%${req.params.string}%`);
+        res.status(200).send({nurses : nurses}) ;
+    } catch (e) {
+        res.status(400).send({'message' : e.message}) ;
+    }
+}

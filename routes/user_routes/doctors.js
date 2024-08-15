@@ -13,5 +13,6 @@ router.post('/:id' , recepAuth, doctorController.createDoctor) ; // id of specia
 
 router.delete('/:id' , recepAuth, doctorController.deleteDoctor) ; // id of doctor
 router.put('/:id' , recepAuth, doctorController.editDoctor) ; // id of doctor
+router.get('/search/:string' , doctorController.searchDoctor) ;
 
 module.exports = router ;

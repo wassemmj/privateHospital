@@ -38,3 +38,21 @@ module.exports.getAllRooms = async (req , res) => {
         res.status(400).send({'message' : e}) ;
     }
 }
+
+module.exports.getFloorRoom = async (req , res) => {
+    try {
+       const rooms = await knex('rooms').where('floorID' , req.params.id) ;
+        res.status(200).send({'rooms' : rooms}) ;
+    } catch (e) {
+        res.status(400).send({'message' : e}) ;
+    }
+}
+
+module.exports.getAllFloors = async (req , res) => {
+    try {
+       const floors = await knex('floors') ;
+        res.status(200).send({'floors' : floors}) ;
+    } catch (e) {
+        res.status(400).send({'message' : e}) ;
+    }
+}

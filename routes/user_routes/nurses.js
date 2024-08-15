@@ -10,5 +10,6 @@ router.post('/' , recepAuth, nurseController.createNurse) ;
 
 router.delete('/:id' , recepAuth, nurseController.deleteNurse) ; // id of nurse
 router.put('/:id' , recepAuth, nurseController.editNurse) ; // dif of nurse
+router.get('/search/:string' , nurseController.searchNurse) ;
 
 module.exports = router ;

@@ -172,11 +172,6 @@ module.exports.editDoctor = async (req , res) => {
 
     const { error } = schema.validate(editDoctor) ;
     if (error) return res.status(404).send({'message' : error.details[0].message}) ;
-
-    if(isNaN(doctorID) || doctorID <=0) {
-        throw new Error('bad request!') ;
-    }
-
     try {
         const result = await knex('doctors').where('id' , '=' , doctorID).first() ;
         if (result === undefined){
@@ -194,5 +189,20 @@ module.exports.editDoctor = async (req , res) => {
         res.status(200).send({'message' : 'edited successfully'}) ;
     } catch (e) {
         res.status(404).send({'message' : e.message}) ;
+    }
+}
+
+module.exports.searchDoctor = async (req , res) => {
+    try {
+        const doctors = await knex('doctors as d')
+            .select('d.id' , 'd.userID' , 'd.specialistsID' , 's.name' ,
+                'fullName' , 'fatherName' , 'motherName' , 'phoneNumber' ,
+                'internationalNumber' , 'currentLocation' , 'birthdate' , 'gender')
+            .join('users as u' , 'u.id' , 'd.userID')
+            .join('specialists as s' , 's.id' , 'd.specialistsID')
+            .where('fullName', 'like', `%${req.params.string}%`);
+        res.status(200).send({doctors : doctors}) ;
+    } catch (e) {
+        res.status(400).send({'message' : e.message}) ;
     }
 }

@@ -12,5 +12,6 @@ router.get('/:id' , nonMedicalController.getNonMedicalSpecialist) ; // id of non
 
 router.delete('/:id' , recepAuth, nonMedicalController.deleteAccount) ; // id of nonMedical
 router.put('/:id' , recepAuth, nonMedicalController.editAccount) ; // id of nonMedical
+router.get('/search/:id/:string' , nonMedicalController.searchNon) ;
 
 module.exports = router ;

@@ -126,7 +126,7 @@ module.exports.addRadiographResponse = async (req, res) => {
 
 module.exports.getMyRadiographToResponse = async (req, res) => {
     try {
-        const radiographs = await knex('radiographs').whereNull("photo");
+        const radiographs = await knex('radiographs');
         res.status(200).send({'Radiographs': radiographs});
     } catch (e) {
         res.status(404).send({'message': e.message});

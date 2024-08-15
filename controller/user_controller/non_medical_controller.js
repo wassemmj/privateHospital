@@ -20,6 +20,22 @@ module.exports.getAllNonMedical = async (req , res) => {
     }
 }
 
+module.exports.searchNon = async (req , res) => {
+    try {
+        const nonMedical = await knex('nonMedicals as nm')
+            .select('nm.id' , 'nm.userID' , 'nm.nonSpecialistsID' , 'ns.name' ,
+                'fullName' , 'fatherName' , 'motherName' , 'phoneNumber' ,
+                'internationalNumber' , 'currentLocation' , 'birthdate' , 'gender')
+            .join('users as u' , 'u.id' , 'nm.userID')
+            .join('nonSpecialists as ns' , 'ns.id' , 'nm.nonSpecialistsID')
+            .where('ns.id' ,'=' ,req.params.id)
+            .andWhere('fullName' , 'like' , `%${req.params.string}%`);
+        res.status(200).send({'nonMedical' : nonMedical}) ;
+    } catch (e) {
+        return res.status(400).send({'message' : e.message}) ;
+    }
+}
+
 module.exports.getNonMedicalDetails = async (req , res) => {
     try {
         const nonMedical = await knex('nonMedicals as nm')

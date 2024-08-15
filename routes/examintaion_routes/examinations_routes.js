@@ -26,7 +26,7 @@ module.exports = (io) => {
     router.get('/patient/:id' , examination.getPatientExaminations) ;
     router.post('/radiograph/:id' ,doctorMidl, examination.addRadiograph(io)) ;
     router.post('/radiograph/response/:id' , nonMedicalAuth, upload.fields([{ name: 'image', maxCount: 1 }, { name: 'pdf', maxCount: 1 }]) ,  examination.addRadiographResponse) ;
-    router.get('/radiograph/' , nonMedicalAuth, examination.getMyExaminationsToResponse) ;
+    router.get('/radiograph' , nonMedicalAuth, examination.getMyRadiographToResponse) ;
     router.get('/patient/radio/:id' , examination.getPatientRadiograph) ;
     return router ;
 } ;
