@@ -130,7 +130,6 @@ module.exports.editPatientInformation = async (req, res) => {
     }
 };
 
-
 module.exports.editCompanionInformation = async (req, res) => {
     const schema = Joi.object({
         fullName: Joi.string().min(3),
@@ -209,7 +208,7 @@ module.exports.checkout = async (req, res) => {
 
 module.exports.getpatients = async (req, res) => {
     try {
-        const patients = await knex('patients').select('id', 'fullName', 'deleted_at');
+        const patients = await knex('patients');
         res.status(200).json(patients);
     } catch (error) {
         console.error(error);
@@ -219,7 +218,7 @@ module.exports.getpatients = async (req, res) => {
 
 module.exports.get_checkinPatient = async (req, res) => {
     try {
-        const patients = await knex('patients').select('id', 'fullName')
+        const patients = await knex('patients')
             .whereNull('deleted_at');
 
         res.status(200).json(patients);
@@ -262,4 +261,50 @@ module.exports.getAllClinicalForm = async (req,res)=>{
     }
 };
 
+module.exports.getCompanion = async (req , res) => {
+    try {
+        const patients = await knex('companions').where('patientID' , req.params.id).first();
+        res.status(200).send({companion: patients});
+    } catch (error) {
+        res.status(500).send({message: 'An error occurred while fetching patient records'});
+    }
+}
 
+module.exports.searchPatientInHospital = async (req , res) => {
+    try {
+        const patients = await knex('patients')
+            .where('fullName' , 'like' , `%${req.params.string}%`)
+            .whereNull('deleted_at');
+        res.status(200).send({patients: patients});
+    } catch (error) {
+        res.status(500).send({message: 'An error occurred while fetching patient records'});
+    }
+}
+
+module.exports.searchPatient = async (req , res) => {
+    try {
+        const patients = await knex('patients')
+            .where('fullName' , 'like' , `%${req.params.string}%`);
+        res.status(200).send({patients: patients});
+    } catch (error) {
+        res.status(500).send({message: 'An error occurred while fetching patient records'});
+    }
+}
+
+module.exports.getPatientByRoom = async (req , res) => {
+    try {
+        const patients = await knex('patients as p')
+            .join ('patientRoom as pr' , 'p.id' , 'pr.patientID')
+            .where('pr.roomID' , '=' , req.params.id);
+        patients.forEach((value) => {
+            value.birthdate = new Intl.DateTimeFormat('fr-CA', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit'
+            }).format(new Date (value.birthdate)) ;
+        }) ;
+        res.status(200).send({patient: patients[0]});
+    } catch (error) {
+        res.status(500).send({message: 'An error occurred while fetching patient records'});
+    }
+}

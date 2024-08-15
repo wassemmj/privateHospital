@@ -45,6 +45,13 @@ module.exports.getNonMedicalDetails = async (req , res) => {
             .join('users as u' , 'u.id' , 'nm.userID')
             .join('nonSpecialists as ns' , 'ns.id' , 'nm.nonSpecialistsID')
             .where('nm.id' ,'=' ,req.params.id);
+        nonMedical.forEach((value) => {
+            value.birthdate = new Intl.DateTimeFormat('fr-CA', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit'
+            }).format(new Date (value.birthdate)) ;
+        }) ;
         res.status(200).send({'nonMedical' : nonMedical[0]}) ;
     } catch (e) {
         return res.status(400).send({'message' : e.message}) ;
