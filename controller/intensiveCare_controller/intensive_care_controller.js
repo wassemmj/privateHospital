@@ -119,7 +119,6 @@ module.exports.Intensive_Care_constants = async (req, res) => {
     }
 };
 
-
 module.exports.Intensive_Care_changables = async (req, res) => {
     const schema = Joi.object({
         shift: Joi.string(),
@@ -168,6 +167,54 @@ module.exports.Intensive_Care_vitals = async (req, res) => {
         res.status(500).send({message: error.message});
     }
 };
+
+module.exports.get_Intensive_care =async (req,res) =>{
+    try{
+        patientID = req.params.id;
+        const patientCare = await knex('intensiveCares').where('patientID' , patientID).last();
+        res.status(200).send({'patientCare' : patientCare})
+    }catch (e){
+        res.status(404).send({'message': e.message});
+    }
+}
+
+module.exports.get_Intensive_care_constant =async (req,res) =>{
+    try{
+        patientID = req.params.id;
+        const patientCare = await knex('intensiveCares').where('patientID' , patientID).last();
+        const patientCareConstant = await knex('constants').where('IntensiveCareID' , patientCare[0].id );
+        console.log(patientCareConstant);
+        res.status(200).send({'patientCareConstant' : patientCareConstant})
+    }catch (e){
+        res.status(404).send({'message': e.message});
+    }
+}
+
+module.exports.get_Intensive_care_changable =async (req,res) =>{
+    try{
+        patientID = req.params.id;
+        const patientCare = await knex('intensiveCares').where('patientID' , patientID).last();
+        const patientCarechangable = await knex('changables').where('IntensiveCareID' , patientCare[0].id );
+        console.log(patientCarechangable);
+        res.status(200).send({'patientCarechangable' : patientCarechangable})
+    }catch (e){
+        res.status(404).send({'message': e.message});
+    }
+}
+
+module.exports.get_Intensive_care_vitals =async (req,res) =>{
+    try{
+        patientID = req.params.id;
+        const patientCare = await knex('intensiveCares').where('patientID' , patientID).last();
+        const patientCarevitals = await knex('vitals').where('IntensiveCareID' , patientCare[0].id );
+        console.log(patientCarevitals);
+        res.status(200).send({'patientCarevitals' : patientCarevitals})
+    }catch (e){
+        res.status(404).send({'message': e.message});
+    }
+}
+
+
 
 
 

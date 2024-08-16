@@ -11,5 +11,9 @@ router.post('/Intensive_Care_constants/:IntensiveCareID' , [doctor , nurse], int
 router.post('/Intensive_Care_changables/:IntensiveCareID' , [doctor , nurse], intensiveCareController.Intensive_Care_changables) ;
 router.post('/Intensive_Care_vitals/:IntensiveCareID' , [doctor , nurse], intensiveCareController.Intensive_Care_vitals) ;
 router.post('/:patientid/:roomid' , [doctor , nurse], intensiveCareController.chooseIntensiveCare) ;
+router.get('/:id' , [doctor , nurse], intensiveCareController.get_Intensive_care) ;
+router.get('/constant/:id' , [doctor , nurse], intensiveCareController.get_Intensive_care_constant) ;
+router.get('/changable/:id' , [doctor , nurse], intensiveCareController.get_Intensive_care_changable) ;
+router.get('/vitals/:id' , [doctor , nurse], intensiveCareController.get_Intensive_care_vitals) ;
 
 module.exports = router;
