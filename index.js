@@ -27,6 +27,7 @@ const examinations = require('./routes/examintaion_routes/examinations_routes');
 const screeningTest = require('./routes/examintaion_routes/screening_test_routes');
 const intensiveCare = require('./routes/intensiveCare_routes/intensive_care');
 const surgeryFile = require('./routes/intensiveCare_routes/surgery_file');
+const file_pdf = require('./routes/file_route/pdffile_route');
 const cors = require("cors");
 
 app.use(cors()) ;
@@ -52,6 +53,7 @@ app.use('/api/examinations' , examinations(io)) ;
 app.use('/api/screeningTest' , screeningTest) ;
 app.use('/api/intensiveCare' , intensiveCare) ;
 app.use('/api/surgeryFile' , surgeryFile) ;
+app.use('/api/file_pdf' , file_pdf) ;
 
 io.on('connection', (socket) => {
     console.log('A user connected');
