@@ -127,7 +127,7 @@ module.exports.create_pdfFile = async (req,res) => {
         doc.fontSize(16).text('Patient Information', { align: 'center' });
         doc.moveDown(); // Add some space
 
-        console.log(examination) ;
+        console.log(examinationPdf) ;
         Object.keys(clinicalForms).forEach(key => {
             if (clinicalForms[key] !== undefined ) {
                 Object.keys(clinicalForms[key]).forEach(keys => {
@@ -141,16 +141,16 @@ module.exports.create_pdfFile = async (req,res) => {
                 })
             }
             // doc.fontSize(12).text(${key}: ${clinicalForms[key]});
-            Object.keys(examinationPdf).forEach(key => {
-                if (examinationPdf[key] !== undefined ){
-                    Object.keys(examinationPdf[key]).forEach(keys => {
-                        if (examinationPdf[key][keys] instanceof Object){
-                            doc.fontSize(12).text(`${keys}: ${examinationPdf[key][keys]}`);
-                        }
-                    })
-                }
-            })
         });
+        Object.keys(examinationPdf).forEach(key => {
+            if (examinationPdf[key] !== undefined ){
+                Object.keys(examinationPdf[key]).forEach(keys => {
+                    Object.keys(examinationPdf[key][keys]).forEach(keyss =>{
+                        doc.fontSize(12).text(`${keyss}: ${examinationPdf[key][keys][keyss]}`);
+                    })
+                })
+            }
+        })
 
         doc.end();
         // doc.save();
