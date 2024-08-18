@@ -206,3 +206,22 @@ module.exports.searchDoctor = async (req , res) => {
         res.status(400).send({'message' : e.message}) ;
     }
 }
+
+module.exports.statistics = async (req , res) => {
+    try {
+        const currentYear = new Date().getFullYear();
+        const stats = await knex('patients')
+            .select(
+                knex.raw("DATE_FORMAT(created_at, '%M') as month_name"),
+                knex.raw('COUNT(*) as count')
+            )
+            .whereRaw('YEAR(created_at) = ?', [currentYear])
+            .groupByRaw("DATE_FORMAT(created_at, '%M')")
+            .orderByRaw('MONTH(created_at)');
+
+        res.json(stats);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+}
