@@ -58,3 +58,33 @@ module.exports.surgery_file = async (req, res) => {
     }
 };
 
+module.exports.geAll_surgeryFile = async (req,res)=>{
+    try{
+        patientID = req.params.id;
+        const patientSurgery = await knex('surgeryFiles').select('id' , 'created_at').where('patientID' , patientID).orderBy('id', 'desc');
+        res.status(200).send({'patientSurgery' : patientSurgery})
+
+    }catch (e){
+        res.status(404).send({'message': e.message});
+    }
+
+}
+
+module.exports.get_surgeryFile =async (req,res) =>{
+    const patientSurgeryyyy = {} ;
+    try{
+        const surgeryID = req.params.id;
+        // const patientSurgery = await knex('surgeryFiles').where('patientID' , patientID).orderBy('id', 'desc').first();
+        const patientotherInfos = await knex('otherInfos').where('surgeryFileID' , surgeryID );
+        const patientmedicalCrewInfos = await knex('medicalCrewInfos').where('surgeryFileID' , surgeryID );
+        // console.log(patientCarevitals);
+        patientSurgeryyyy.patientotherInfos = patientotherInfos;
+        patientSurgeryyyy.patientmedicalCrewInfos = patientmedicalCrewInfos;
+
+        res.status(200).send({'patientSurgeryyyy' : patientSurgeryyyy})
+    }catch (e){
+        res.status(404).send({'message': e.message});
+    }
+}
+
+

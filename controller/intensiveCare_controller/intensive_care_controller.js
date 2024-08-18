@@ -171,7 +171,7 @@ module.exports.Intensive_Care_vitals = async (req, res) => {
 module.exports.get_Intensive_care =async (req,res) =>{
     try{
         patientID = req.params.id;
-        const patientCare = await knex('intensiveCares').where('patientID' , patientID).last();
+        const patientCare = await knex('intensiveCares').where('patientID' , patientID).orderBy('id', 'desc').first();
         res.status(200).send({'patientCare' : patientCare})
     }catch (e){
         res.status(404).send({'message': e.message});
@@ -180,9 +180,9 @@ module.exports.get_Intensive_care =async (req,res) =>{
 
 module.exports.get_Intensive_care_constant =async (req,res) =>{
     try{
-        patientID = req.params.id;
-        const patientCare = await knex('intensiveCares').where('patientID' , patientID).last();
-        const patientCareConstant = await knex('constants').where('IntensiveCareID' , patientCare[0].id );
+        const patientID = req.params.id;
+        const patientCare = await knex('intensiveCares').where('patientID' , patientID).orderBy('id', 'desc').first();
+        const patientCareConstant = await knex('constants').where('IntensiveCareID' , patientCare.id );
         console.log(patientCareConstant);
         res.status(200).send({'patientCareConstant' : patientCareConstant})
     }catch (e){
@@ -193,8 +193,8 @@ module.exports.get_Intensive_care_constant =async (req,res) =>{
 module.exports.get_Intensive_care_changable =async (req,res) =>{
     try{
         patientID = req.params.id;
-        const patientCare = await knex('intensiveCares').where('patientID' , patientID).last();
-        const patientCarechangable = await knex('changables').where('IntensiveCareID' , patientCare[0].id );
+        const patientCare = await knex('intensiveCares').where('patientID' , patientID).orderBy('id', 'desc').first();
+        const patientCarechangable = await knex('changables').where('IntensiveCareID' , patientCare.id );
         console.log(patientCarechangable);
         res.status(200).send({'patientCarechangable' : patientCarechangable})
     }catch (e){
@@ -205,8 +205,8 @@ module.exports.get_Intensive_care_changable =async (req,res) =>{
 module.exports.get_Intensive_care_vitals =async (req,res) =>{
     try{
         patientID = req.params.id;
-        const patientCare = await knex('intensiveCares').where('patientID' , patientID).last();
-        const patientCarevitals = await knex('vitals').where('IntensiveCareID' , patientCare[0].id );
+        const patientCare = await knex('intensiveCares').where('patientID' , patientID).orderBy('id', 'desc').first();
+        const patientCarevitals = await knex('vitals').where('IntensiveCareID' , patientCare.id );
         console.log(patientCarevitals);
         res.status(200).send({'patientCarevitals' : patientCarevitals})
     }catch (e){

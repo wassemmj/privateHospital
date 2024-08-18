@@ -6,12 +6,14 @@ const {object} = require("joi");
 
 module.exports.create_pdfFile = async (req,res) => {
     const clinicalForms = {} ;
+    const examinationPdf = {};
     try{
         const patientID = req.params.id;
         // Fetch data from MySQL using Knex
         // const data = await knex('patients').where("id" , patientID);
 
         const patient = await knex('patients').where('id' , patientID).first() ;
+        const examination = await knex('medicalExaminations').select('doctorID','patientID','askExaminations','response').where('patientID' , patientID);
         const ccccc = await knex('clinicalForms').where('patientID' , patientID).orderBy('id', 'desc').first();
         const id = ccccc['id'] ;
         clinicalForms.demographInfo = patient ;
@@ -107,6 +109,12 @@ module.exports.create_pdfFile = async (req,res) => {
             limbs.manus = manus ;
         }
         clinicalForms.limbs = limbs ;
+
+        examinationPdf.examination = examination;
+        // allPatientPdf.clinicalForms = clinicalForms;
+        // allPatientPdf.examination = examination;
+
+
         // Initialize a PDF document
         const doc = new PDFDocument();
 
@@ -119,7 +127,7 @@ module.exports.create_pdfFile = async (req,res) => {
         doc.fontSize(16).text('Patient Information', { align: 'center' });
         doc.moveDown(); // Add some space
 
-        console.log(clinicalForms) ;
+        console.log(examination) ;
         Object.keys(clinicalForms).forEach(key => {
             if (clinicalForms[key] !== undefined ) {
                 Object.keys(clinicalForms[key]).forEach(keys => {
@@ -133,6 +141,15 @@ module.exports.create_pdfFile = async (req,res) => {
                 })
             }
             // doc.fontSize(12).text(${key}: ${clinicalForms[key]});
+            Object.keys(examinationPdf).forEach(key => {
+                if (examinationPdf[key] !== undefined ){
+                    Object.keys(examinationPdf[key]).forEach(keys => {
+                        if (examinationPdf[key][keys] instanceof Object){
+                            doc.fontSize(12).text(`${keys}: ${examinationPdf[key][keys]}`);
+                        }
+                    })
+                }
+            })
         });
 
         doc.end();
