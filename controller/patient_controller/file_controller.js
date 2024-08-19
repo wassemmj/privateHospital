@@ -7,13 +7,13 @@ const {object} = require("joi");
 module.exports.create_pdfFile = async (req,res) => {
     const clinicalForms = {} ;
     const examinationPdf = {};
+    const dischargeSummarySheetsPdf = {};
     try{
         const patientID = req.params.id;
         // Fetch data from MySQL using Knex
         // const data = await knex('patients').where("id" , patientID);
 
         const patient = await knex('patients').where('id' , patientID).first() ;
-        const examination = await knex('medicalExaminations').select('doctorID','patientID','askExaminations','response').where('patientID' , patientID);
         const ccccc = await knex('clinicalForms').where('patientID' , patientID).orderBy('id', 'desc').first();
         const id = ccccc['id'] ;
         clinicalForms.demographInfo = patient ;
@@ -29,7 +29,7 @@ module.exports.create_pdfFile = async (req,res) => {
         clinicalForms.complentDetail = complentDetail ;
         const PastMedicalHistory = await knex('pastMedicalHistorys').where('clinicalFormID',id).first() ;
         if (PastMedicalHistory !== undefined) {
-            const internal_diseases_and_genetic_disorders = await knex('internal_diseases_and_genetic_disorders')
+                const internal_diseases_and_genetic_disorders = await knex('internal_diseases_and_genetic_disorders')
                 .where('pastmedicalID' , PastMedicalHistory.id).first() ;
             PastMedicalHistory.internal_diseases_and_genetic_disorders = internal_diseases_and_genetic_disorders ;
             const sergonsHistorys = await knex('sergonsHistorys')
@@ -110,11 +110,11 @@ module.exports.create_pdfFile = async (req,res) => {
         }
         clinicalForms.limbs = limbs ;
 
+        const examination = await knex('medicalExaminations').select('askExaminations','response').where('patientID' , patientID);
         examinationPdf.examination = examination;
-        // allPatientPdf.clinicalForms = clinicalForms;
-        // allPatientPdf.examination = examination;
 
-
+        const dischargeSummarySheets = await knex('dischargeSummarySheets').where('patientID' , patientID);
+        dischargeSummarySheetsPdf.dischargeSummarySheets = dischargeSummarySheets;
         // Initialize a PDF document
         const doc = new PDFDocument();
 
@@ -125,9 +125,10 @@ module.exports.create_pdfFile = async (req,res) => {
         const writeStream = fs.createWriteStream(filePath);
         doc.pipe(writeStream);
         doc.fontSize(16).text('Patient Information', { align: 'center' });
-        doc.moveDown(); // Add some space
+        doc.moveDown();
+        // Add some space
 
-        console.log(examinationPdf) ;
+        // console.log(examinationPdf) ;
         Object.keys(clinicalForms).forEach(key => {
             if (clinicalForms[key] !== undefined ) {
                 Object.keys(clinicalForms[key]).forEach(keys => {
@@ -135,13 +136,16 @@ module.exports.create_pdfFile = async (req,res) => {
                         Object.keys(clinicalForms[key][keys]).forEach(keyss => {
                             doc.fontSize(12).text(`${keyss}: ${clinicalForms[key][keys][keyss]}`);
                         })
+                        doc.moveDown(1);
                     } else {
                         doc.fontSize(12).text(`${keys}: ${clinicalForms[key][keys]}`);
                     }
                 })
+                doc.moveDown(2);
             }
-            // doc.fontSize(12).text(${key}: ${clinicalForms[key]});
         });
+        doc.moveDown(4);
+
         Object.keys(examinationPdf).forEach(key => {
             if (examinationPdf[key] !== undefined ){
                 Object.keys(examinationPdf[key]).forEach(keys => {
@@ -151,6 +155,20 @@ module.exports.create_pdfFile = async (req,res) => {
                 })
             }
         })
+        doc.moveDown(4);
+
+        Object.keys(dischargeSummarySheetsPdf).forEach(key => {
+            if (dischargeSummarySheetsPdf[key] !== undefined ){
+                Object.keys(dischargeSummarySheetsPdf[key]).forEach(keys => {
+                    Object.keys(dischargeSummarySheetsPdf[key][keys]).forEach(keyss =>{
+                        doc.fontSize(12).text(`${keyss}: ${dischargeSummarySheetsPdf[key][keys][keyss]}`);
+                    })
+                    doc.moveDown(1);
+                })
+                doc.moveDown(2);
+            }
+        })
+        doc.moveDown(4);
 
         doc.end();
         // doc.save();
